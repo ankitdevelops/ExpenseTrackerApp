@@ -32,7 +32,7 @@ const SignUp = () => {
       <View>
         <Button
           mode="contained"
-          onPress={() => console.log('Pressed')}
+          onPress={() => navigation.push('Home')}
           textColor="#DAE0E2"
           buttonColor="#2F363F"
           compact={false}>

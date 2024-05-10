@@ -24,7 +24,7 @@ function App() {
   return (
     <NavigationContainer theme={DarkTheme}>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Login"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Login" component={Login} />

@@ -12,82 +12,84 @@ import {useNavigation} from '@react-navigation/native';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import HistoryItem from '../components/HistoryItem';
 import CategoryItem from '../components/CategoryItem';
+import AppHeader from '../components/AppHeader';
 
 const Home = () => {
   const navigation = useNavigation();
 
   return (
-    <ScrollView>
-      <View>
-        <Appbar.Header elevated={true}>
-          <Appbar.Content title="Home" />
-          <Appbar.Action
-            icon="account-circle"
-            onPress={() => {
-              console.log('show more');
-            }}
-          />
-        </Appbar.Header>
-        <View style={[styles.horizontalPadding, styles.topMargin]}>
-          <Card style={styles.cardPadding}>
-            <Text variant="titleLarge">Feb</Text>
-            <Text variant="displaySmall">$ 500</Text>
-          </Card>
-        </View>
+    <>
+      <ScrollView>
+        <View>
+          <AppHeader />
+          <View style={[styles.horizontalPadding, styles.topMargin]}>
+            <Card style={styles.cardPadding}>
+              <Text variant="titleLarge">Feb</Text>
+              <Text variant="displaySmall">$ 500</Text>
+            </Card>
+          </View>
 
-        {/* category container */}
-        <View style={[styles.horizontalPadding, styles.topMargin]}>
-          <Card style={[styles.cardPadding]}>
-            <View style={styles.historyContainer}>
-              <Text variant="bodySmall">
-                Category <Icon source="clipboard-list" />
-              </Text>
-              <Text variant="bodySmall">
-                View All <Icon source="arrow-right-drop-circle" />
-              </Text>
-            </View>
-            <ScrollView style={styles.categoryItemContainer} horizontal={true}>
-              <CategoryItem />
-              <CategoryItem />
-              <CategoryItem />
-              <CategoryItem />
-              <CategoryItem />
-              <CategoryItem />
-            </ScrollView>
-          </Card>
+          {/* category container */}
+          <View style={[styles.horizontalPadding, styles.topMargin]}>
+            <Card style={[styles.cardPadding]}>
+              <View style={styles.historyContainer}>
+                <Text variant="bodySmall">
+                  Category <Icon source="clipboard-list" />
+                </Text>
+                <Text variant="bodySmall">
+                  View All <Icon source="arrow-right-drop-circle" />
+                </Text>
+              </View>
+              <ScrollView
+                style={styles.categoryItemContainer}
+                horizontal={true}>
+                <CategoryItem />
+                <CategoryItem />
+                <CategoryItem />
+                <CategoryItem />
+                <CategoryItem />
+                <CategoryItem />
+              </ScrollView>
+            </Card>
+          </View>
+          {/* history container */}
+          <View
+            style={[
+              styles.horizontalPadding,
+              styles.topMargin,
+              styles.bottomMargin,
+            ]}>
+            <Card style={[styles.cardPadding]}>
+              <View style={styles.historyContainer}>
+                <Text variant="bodySmall">
+                  History <Icon source="history" />
+                </Text>
+                <Text variant="bodySmall">
+                  View All <Icon source="arrow-right-drop-circle" />
+                </Text>
+              </View>
+              <View>
+                <HistoryItem />
+                <HistoryItem />
+                <HistoryItem />
+                <HistoryItem />
+                <HistoryItem />
+                <HistoryItem />
+                <HistoryItem />
+                <HistoryItem />
+                <HistoryItem />
+                <HistoryItem />
+              </View>
+            </Card>
+          </View>
         </View>
-        {/* history container */}
-        <View style={[styles.horizontalPadding, styles.topMargin]}>
-          <Card style={[styles.cardPadding]}>
-            <View style={styles.historyContainer}>
-              <Text variant="bodySmall">
-                History <Icon source="history" />
-              </Text>
-              <Text variant="bodySmall">
-                View All <Icon source="arrow-right-drop-circle" />
-              </Text>
-            </View>
-            <View>
-              <HistoryItem />
-              <HistoryItem />
-              <HistoryItem />
-              <HistoryItem />
-              <HistoryItem />
-              <HistoryItem />
-              <HistoryItem />
-              <HistoryItem />
-              <HistoryItem />
-              <HistoryItem />
-            </View>
-          </Card>
-        </View>
-      </View>
+      </ScrollView>
       <FAB
         icon="plus"
         style={styles.fab}
         onPress={() => console.log('Pressed')}
       />
-    </ScrollView>
+    </>
   );
 };
 const styles = StyleSheet.create({
@@ -96,6 +98,9 @@ const styles = StyleSheet.create({
   },
   topMargin: {
     marginTop: 10,
+  },
+  bottomMargin: {
+    marginBottom: 50,
   },
   cardPadding: {
     padding: 15,

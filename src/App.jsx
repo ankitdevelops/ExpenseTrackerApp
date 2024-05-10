@@ -16,6 +16,7 @@ const {LightTheme, DarkTheme} = adaptNavigationTheme({
 // screens
 import Login from './screens/Login';
 import Home from './screens/Home';
+import SignUp from './screens/SignUp';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ function App() {
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SignUp" component={SignUp} />
       </Stack.Navigator>
     </NavigationContainer>
   );

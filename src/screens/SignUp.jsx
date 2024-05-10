@@ -3,9 +3,9 @@ import {View, StyleSheet} from 'react-native';
 import {TextInput, Button, Text} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 
-const Login = () => {
+const SignUp = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   const navigation = useNavigation();
 
@@ -13,18 +13,18 @@ const Login = () => {
     <View style={styles.container}>
       <View>
         <TextInput
-          label="Email"
-          value={email}
-          onChangeText={email => setEmail(email)}
+          label="Full Name"
+          value={name}
+          onChangeText={name => setName(name)}
           mode="outlined"
           theme={{roundness: 50}}
         />
       </View>
       <View style={styles.colMargin}>
         <TextInput
-          label="Password"
-          value={password}
-          onChangeText={password => setPassword(password)}
+          label="Email"
+          value={email}
+          onChangeText={email => setEmail(email)}
           mode="outlined"
           theme={{roundness: 50}}
         />
@@ -37,17 +37,17 @@ const Login = () => {
           buttonColor="#2F363F"
           compact={false}>
           <Text variant="titleMedium" style={styles.buttonText}>
-            Login Now
+            SignUp Now
           </Text>
         </Button>
       </View>
       <View style={styles.pageNavigation}>
-        <Text variant="labelSmall">don't have an account:</Text>
+        <Text variant="labelSmall">already have an account:</Text>
         <Text
           variant="labelMedium"
           style={styles.singupBtn}
-          onPress={() => navigation.push('SignUp')}>
-          Sing Up
+          onPress={() => navigation.push('Login')}>
+          Login Now
         </Text>
       </View>
     </View>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 18,
     color: '#eeee',
   },
   pageNavigation: {
@@ -79,4 +79,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default SignUp;

@@ -17,7 +17,6 @@ const SignUp = () => {
           value={name}
           onChangeText={name => setName(name)}
           mode="outlined"
-          theme={{roundness: 50}}
         />
       </View>
       <View style={styles.colMargin}>
@@ -26,7 +25,6 @@ const SignUp = () => {
           value={email}
           onChangeText={email => setEmail(email)}
           mode="outlined"
-          theme={{roundness: 50}}
         />
       </View>
       <View>
@@ -35,6 +33,7 @@ const SignUp = () => {
           onPress={() => navigation.push('Home')}
           textColor="#DAE0E2"
           buttonColor="#2F363F"
+          theme={{roundness: 1}}
           compact={false}>
           <Text variant="titleMedium" style={styles.buttonText}>
             SignUp Now

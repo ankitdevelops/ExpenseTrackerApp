@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {TextInput, Button, Text} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 
-const Login = () => {
+const Login = ({theme}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -17,7 +17,6 @@ const Login = () => {
           value={email}
           onChangeText={email => setEmail(email)}
           mode="outlined"
-          theme={{roundness: 50}}
         />
       </View>
       <View style={styles.colMargin}>
@@ -26,7 +25,6 @@ const Login = () => {
           value={password}
           onChangeText={password => setPassword(password)}
           mode="outlined"
-          theme={{roundness: 50}}
         />
       </View>
       <View>
@@ -35,6 +33,7 @@ const Login = () => {
           onPress={() => navigation.push('Home')}
           textColor="#DAE0E2"
           buttonColor="#2F363F"
+          theme={{roundness: 1}}
           compact={false}>
           <Text variant="titleMedium" style={styles.buttonText}>
             Login Now

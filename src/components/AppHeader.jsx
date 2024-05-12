@@ -1,9 +1,22 @@
 import React from 'react';
 import {Appbar} from 'react-native-paper';
-const AppHeader = () => {
+import {useNavigation, useRoute} from '@react-navigation/native';
+
+const AppHeader = ({title}) => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const showBackButton = route.name !== 'Home';
   return (
     <Appbar.Header elevated={true}>
-      <Appbar.Content title="Home" />
+      {showBackButton && (
+        <Appbar.Action
+          icon="keyboard-backspace"
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+      )}
+      <Appbar.Content title={title ? title : 'Home'} />
       <Appbar.Action
         icon="account-circle"
         onPress={() => {

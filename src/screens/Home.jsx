@@ -19,9 +19,9 @@ const Home = () => {
 
   return (
     <>
+      <AppHeader />
       <ScrollView>
         <View>
-          <AppHeader />
           <View style={[styles.horizontalPadding, styles.topMargin]}>
             <Card style={styles.cardPadding}>
               <Text variant="titleLarge">Feb</Text>
@@ -87,7 +87,7 @@ const Home = () => {
       <FAB
         icon="plus"
         style={styles.fab}
-        onPress={() => console.log('Pressed')}
+        onPress={() => navigation.push('AddExpense')}
       />
     </>
   );

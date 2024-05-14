@@ -1,6 +1,15 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
-import {TextInput, Button, useTheme} from 'react-native-paper';
+import {
+  TextInput,
+  Button,
+  useTheme,
+  Portal,
+  Modal,
+  RadioButton,
+  Divider,
+  Icon,
+} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {PaperSelect} from 'react-native-paper-select';
 
@@ -12,11 +21,7 @@ const AddExpense = () => {
 
   const [name, setName] = useState('');
   const [amount, setAmount] = useState(0);
-  const [category, setCategory] = useState({
-    value: '',
-    selectedList: [],
-    error: '',
-  });
+  const [category, setCategory] = useState('');
   const categories = [
     {_id: 1, value: 'Food & Dining'},
     {_id: 2, value: 'Groceries'},
@@ -24,6 +29,12 @@ const AddExpense = () => {
     {_id: 4, value: 'Utilities'},
     {_id: 5, value: 'Rent/Mortgage'},
   ];
+
+  const [visible, setVisible] = React.useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+  const containerStyle = {backgroundColor: 'white', padding: 20};
   return (
     <View>
       <AppHeader title="Add Expense" />
@@ -45,25 +56,74 @@ const AddExpense = () => {
           />
         </View>
         <View style={styles.inputFieldMargin}>
-          <PaperSelect
-            label="Select Category"
-            value={category.value}
-            onSelection={value => {
-              setCategory({
-                ...category,
-                value: value.text,
-                selectedList: value.selectedList,
-                error: '',
-              });
-            }}
-            arrayList={[...categories]}
-            selectedArrayList={category.selectedList}
-            errorText={category.error}
-            multiEnable={false}
-            hideSearchBox={true}
-            textInputMode="outlined"
-            textInputOutlineStyle={{borderColor: theme.colors.outline}}
+          <TextInput
+            label="Choose Category"
+            value={category}
+            mode="outlined"
+            onFocus={showModal}
+            onPress={showModal}
+            onChangeText={showModal}
           />
+
+          <Portal>
+            <Modal
+              visible={visible}
+              onDismiss={hideModal}
+              // eslint-disable-next-line react-native/no-inline-styles
+              contentContainerStyle={{
+                backgroundColor: theme.colors.onSecondary,
+                padding: 20,
+                marginHorizontal: 20,
+                borderRadius: 5,
+              }}
+              dismissable={false}>
+              <View>
+                <View
+                  style={{
+                    marginBottom: 10,
+                    marginLeft: 10,
+                    fontSize: 15,
+                    fontWeight: 40,
+                  }}>
+                  <Text variant="headlineLarge">Choose Category</Text>
+                </View>
+
+                <RadioButton.Group
+                  onValueChange={value => setCategory(value)}
+                  value={category}>
+                  {categories.map(item => (
+                    <View key={item._id}>
+                      <RadioButton.Item label={item.value} value={item.value} />
+                      <Divider />
+                    </View>
+                  ))}
+                  <RadioButton.Item label="Second item" value="second" />
+                </RadioButton.Group>
+              </View>
+              <Divider />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  marginTop: 10,
+                }}>
+                <TouchableOpacity onPress={hideModal}>
+                  <Text
+                    variant="headlineLarge"
+                    style={{marginLeft: 10, fontSize: 15, fontWeight: 50}}>
+                    Cancel
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={hideModal}>
+                  <Text
+                    variant="headlineLarge"
+                    style={{marginLeft: 20, fontSize: 15, fontWeight: 50}}>
+                    Done
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </Modal>
+          </Portal>
         </View>
         <View style={styles.inputFieldMargin}>
           <Button
@@ -90,8 +150,12 @@ const styles = StyleSheet.create({
   inputFieldMargin: {
     marginTop: 10,
   },
+
+  modalCategoryContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 });
 
 export default AddExpense;
-
-1647646746;

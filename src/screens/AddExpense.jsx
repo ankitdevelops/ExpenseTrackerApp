@@ -8,10 +8,8 @@ import {
   Modal,
   RadioButton,
   Divider,
-  Icon,
 } from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
-import {PaperSelect} from 'react-native-paper-select';
 
 import AppHeader from '../components/AppHeader';
 
@@ -22,6 +20,11 @@ const AddExpense = () => {
   const [name, setName] = useState('');
   const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState('');
+  const [visible, setVisible] = React.useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+
   const categories = [
     {_id: 1, value: 'Food & Dining'},
     {_id: 2, value: 'Groceries'},
@@ -30,11 +33,6 @@ const AddExpense = () => {
     {_id: 5, value: 'Rent/Mortgage'},
   ];
 
-  const [visible, setVisible] = React.useState(false);
-
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
-  const containerStyle = {backgroundColor: 'white', padding: 20};
   return (
     <View>
       <AppHeader title="Add Expense" />
@@ -79,12 +77,14 @@ const AddExpense = () => {
               dismissable={false}>
               <View>
                 <View
-                  style={{
-                    marginBottom: 10,
-                    marginLeft: 10,
-                    fontSize: 15,
-                    fontWeight: 40,
-                  }}>
+                  style={
+                    {
+                      // marginBottom: 10,
+                      // marginLeft: 10,
+                      // fontSize: 18,
+                      // fontWeight: 40,
+                    }
+                  }>
                   <Text variant="headlineLarge">Choose Category</Text>
                 </View>
 
@@ -101,23 +101,14 @@ const AddExpense = () => {
                 </RadioButton.Group>
               </View>
               <Divider />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  marginTop: 10,
-                }}>
+              <View style={styles.modalFooterBtn}>
                 <TouchableOpacity onPress={hideModal}>
-                  <Text
-                    variant="headlineLarge"
-                    style={{marginLeft: 10, fontSize: 15, fontWeight: 50}}>
-                    Cancel
-                  </Text>
+                  <Text style={styles.modalFooterBtnText}>Cancel</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={hideModal}>
                   <Text
                     variant="headlineLarge"
-                    style={{marginLeft: 20, fontSize: 15, fontWeight: 50}}>
+                    style={styles.modalFooterBtnText}>
                     Done
                   </Text>
                 </TouchableOpacity>
@@ -156,6 +147,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  modalFooterBtn: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 10,
+  },
+  modalFooterBtnText: {marginLeft: 10, fontSize: 15},
 });
 
 export default AddExpense;

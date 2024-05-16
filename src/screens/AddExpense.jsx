@@ -54,14 +54,14 @@ const AddExpense = () => {
           />
         </View>
         <View style={styles.inputFieldMargin}>
-          <TextInput
-            label="Choose Category"
-            value={category}
-            mode="outlined"
-            onFocus={showModal}
-            onPress={showModal}
-            onChangeText={showModal}
-          />
+          <TouchableOpacity onPress={showModal}>
+            <TextInput
+              label="Choose Category"
+              value={category}
+              mode="outlined"
+              editable={false}
+            />
+          </TouchableOpacity>
 
           <Portal>
             <Modal

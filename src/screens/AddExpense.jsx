@@ -41,7 +41,7 @@ const AddExpense = () => {
           <TextInput
             label="Expense Name"
             value={name}
-            onChangeText={name => setName(name)}
+            onChangeText={e => setName(e.target.value)}
             mode="outlined"
           />
         </View>
@@ -49,7 +49,7 @@ const AddExpense = () => {
           <TextInput
             label="Amount"
             value={amount}
-            onChangeText={amount => setAmount(amount)}
+            onChangeText={e => setAmount(e.target.value)}
             mode="outlined"
           />
         </View>
@@ -76,15 +76,7 @@ const AddExpense = () => {
               }}
               dismissable={false}>
               <View>
-                <View
-                  style={
-                    {
-                      // marginBottom: 10,
-                      // marginLeft: 10,
-                      // fontSize: 18,
-                      // fontWeight: 40,
-                    }
-                  }>
+                <View>
                   <Text variant="headlineLarge">Choose Category</Text>
                 </View>
 

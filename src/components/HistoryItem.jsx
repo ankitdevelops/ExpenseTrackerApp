@@ -2,18 +2,18 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Icon, Text} from 'react-native-paper';
 
-const HistoryItem = () => {
+const HistoryItem = ({data}) => {
   return (
     <View style={styles.historyItemContainer}>
       <View style={styles.historyItemInfoContainer}>
         <Icon source="arrow-right-drop-circle" size={32} />
         <View style={styles.historyItemInfo}>
-          <Text variant="bodyLarge">Rent</Text>
-          <Text variant="bodyMedium">Bus Fare</Text>
+          <Text variant="bodyLarge">{data.title}</Text>
+          <Text variant="bodyMedium">{data.category}</Text>
         </View>
       </View>
       <View>
-        <Text variant="titleLarge">$50</Text>
+        <Text variant="titleLarge">$ {data.amount}</Text>
       </View>
     </View>
   );

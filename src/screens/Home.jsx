@@ -1,18 +1,11 @@
 import React from 'react';
-import {
-  Appbar,
-  Card,
-  Text,
-  List,
-  Icon,
-  FAB,
-  IconButton,
-} from 'react-native-paper';
+import {Card, Text, Icon, FAB} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import HistoryItem from '../components/HistoryItem';
 import CategoryItem from '../components/CategoryItem';
 import AppHeader from '../components/AppHeader';
+import {EXPENSE} from '../data/expense';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -64,21 +57,16 @@ const Home = () => {
                 <Text variant="bodySmall">
                   History <Icon source="history" />
                 </Text>
-                <Text variant="bodySmall">
-                  View All <Icon source="arrow-right-drop-circle" />
-                </Text>
+                <TouchableOpacity onPress={() => navigation.push('History')}>
+                  <Text variant="bodySmall">
+                    View All <Icon source="arrow-right-drop-circle" />
+                  </Text>
+                </TouchableOpacity>
               </View>
               <View>
-                <HistoryItem />
-                <HistoryItem />
-                <HistoryItem />
-                <HistoryItem />
-                <HistoryItem />
-                <HistoryItem />
-                <HistoryItem />
-                <HistoryItem />
-                <HistoryItem />
-                <HistoryItem />
+                {EXPENSE.slice(0, 15).map(item => (
+                  <HistoryItem key={item.id} data={item} />
+                ))}
               </View>
             </Card>
           </View>

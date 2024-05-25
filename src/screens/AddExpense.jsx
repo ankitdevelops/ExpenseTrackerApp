@@ -1,4 +1,11 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Dimensions,
+} from 'react-native';
 import React, {useState} from 'react';
 import {
   TextInput,
@@ -12,8 +19,10 @@ import {
 import {useNavigation} from '@react-navigation/native';
 
 import AppHeader from '../components/AppHeader';
+import {CATEGORIES} from '../data/category';
 
 const AddExpense = () => {
+  const screenHeight = Dimensions.get('window').height;
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -24,14 +33,6 @@ const AddExpense = () => {
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
-
-  const categories = [
-    {_id: 1, value: 'Food & Dining'},
-    {_id: 2, value: 'Groceries'},
-    {_id: 3, value: 'Transportation'},
-    {_id: 4, value: 'Utilities'},
-    {_id: 5, value: 'Rent/Mortgage'},
-  ];
 
   return (
     <View>
@@ -76,21 +77,22 @@ const AddExpense = () => {
               }}
               dismissable={false}>
               <View>
-                <View>
-                  <Text variant="headlineLarge">Choose Category</Text>
-                </View>
+                <ScrollView style={{height: screenHeight * 0.5}}>
+                  <View>
+                    <Text variant="headlineLarge">Choose Category</Text>
+                  </View>
 
-                <RadioButton.Group
-                  onValueChange={value => setCategory(value)}
-                  value={category}>
-                  {categories.map(item => (
-                    <View key={item._id}>
-                      <RadioButton.Item label={item.value} value={item.value} />
-                      <Divider />
-                    </View>
-                  ))}
-                  <RadioButton.Item label="Second item" value="second" />
-                </RadioButton.Group>
+                  <RadioButton.Group
+                    onValueChange={value => setCategory(value)}
+                    value={category}>
+                    {CATEGORIES.map(item => (
+                      <View key={item.id}>
+                        <RadioButton.Item label={item.name} value={item.name} />
+                        <Divider />
+                      </View>
+                    ))}
+                  </RadioButton.Group>
+                </ScrollView>
               </View>
               <Divider />
               <View style={styles.modalFooterBtn}>
@@ -145,6 +147,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   modalFooterBtnText: {marginLeft: 10, fontSize: 15},
+  scrollViewContent: {
+    height: 400,
+  },
 });
 
 export default AddExpense;

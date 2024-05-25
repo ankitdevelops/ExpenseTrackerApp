@@ -1,4 +1,10 @@
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Dimensions,
+} from 'react-native';
 import React from 'react';
 import AppHeader from '../components/AppHeader';
 import {
@@ -17,8 +23,13 @@ import HistoryItem from '../components/HistoryItem';
 import {DatePickerModal} from 'react-native-paper-dates';
 import {format} from 'date-fns';
 import {EXPENSE} from '../data/expense';
+import BottomNavigationBar from '../components/BottomNavigation';
+import {CATEGORIES} from '../data/category';
 
 const History = ({}) => {
+  const {height} = Dimensions.get('window');
+  const dynamicHeight = height;
+
   const theme = useTheme();
 
   const [visible, setVisible] = React.useState(false);
@@ -61,18 +72,11 @@ const History = ({}) => {
     [setOpenEnd, setEndDate, setFormattedEndDate],
   );
 
-  const categories = [
-    {_id: 1, value: 'Food & Dining'},
-    {_id: 2, value: 'Groceries'},
-    {_id: 3, value: 'Transportation'},
-    {_id: 4, value: 'Utilities'},
-    {_id: 5, value: 'Rent/Mortgage'},
-  ];
-
   return (
-    <View>
+    <>
       <AppHeader title="History" />
-      <View style={styles.horizontalPadding}>
+
+      <View style={[styles.horizontalPadding, styles.bottomMargin]}>
         <View style={styles.topMargin}>
           <Searchbar
             placeholder="Search"
@@ -81,8 +85,8 @@ const History = ({}) => {
             theme={{roundness: 1}}
           />
         </View>
-        <View style={[styles.topMargin, styles.bottomMargin]}>
-          <Card style={[styles.cardPadding, styles.bottomMargin]}>
+        <View style={[styles.topMargin]}>
+          <Card style={[styles.cardPadding, styles]}>
             <View style={styles.historyContainer}>
               <Chip
                 icon="progress-download"
@@ -170,7 +174,7 @@ const History = ({}) => {
                         borderRadius: 5,
                       }}
                       dismissable={false}>
-                      <View>
+                      <ScrollView style={{height: dynamicHeight * 0.5}}>
                         <View>
                           <Text variant="bodyLarge">Choose Category</Text>
                         </View>
@@ -178,11 +182,11 @@ const History = ({}) => {
                         <RadioButton.Group
                           onValueChange={value => setCategory(value)}
                           value={category}>
-                          {categories.map(item => (
-                            <View key={item._id}>
+                          {CATEGORIES.map(item => (
+                            <View key={item.id}>
                               <RadioButton.Item
-                                label={item.value}
-                                value={item.value}
+                                label={item.name}
+                                value={item.name}
                               />
                               <Divider />
                             </View>
@@ -192,7 +196,7 @@ const History = ({}) => {
                             value="second"
                           />
                         </RadioButton.Group>
-                      </View>
+                      </ScrollView>
                       <Divider />
                       <View style={styles.modalFooterBtn}>
                         <TouchableOpacity
@@ -228,17 +232,22 @@ const History = ({}) => {
                 </View>
               </Modal>
             </Portal>
-            <View>
-              <ScrollView>
-                {EXPENSE.map(item => (
-                  <HistoryItem key={item.id} data={item} />
-                ))}
-              </ScrollView>
-            </View>
+
+            <ScrollView
+              style={[
+                styles.historyItemContainer,
+                {maxHeight: dynamicHeight * 0.65},
+              ]}>
+              {EXPENSE.map(item => (
+                <HistoryItem key={item.id} data={item} />
+              ))}
+            </ScrollView>
           </Card>
         </View>
       </View>
-    </View>
+
+      <BottomNavigationBar />
+    </>
   );
 };
 
@@ -257,6 +266,7 @@ const styles = StyleSheet.create({
   historyContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingVertical: 10,
   },
   modalFooterBtn: {
     flexDirection: 'row',
@@ -265,6 +275,6 @@ const styles = StyleSheet.create({
   },
   modalFooterBtnText: {marginLeft: 10},
   bottomMargin: {
-    marginBottom: 50,
+    marginBottom: 150,
   },
 });

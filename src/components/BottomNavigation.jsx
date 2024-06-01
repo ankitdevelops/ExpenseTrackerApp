@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Card, IconButton, useTheme} from 'react-native-paper';
+import {Card, IconButton} from 'react-native-paper';
 const BottomNavigationBar = () => {
   const navigation = useNavigation();
   const route = useRoute();

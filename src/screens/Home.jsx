@@ -1,13 +1,8 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {Card, Text, Icon, FAB} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
+import {View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import HistoryItem from '../components/HistoryItem';
 import CategoryItem from '../components/CategoryItem';
 import AppHeader from '../components/AppHeader';
@@ -17,14 +12,14 @@ import BottomNavigationBar from '../components/BottomNavigation';
 
 const Home = () => {
   const navigation = useNavigation();
-  const {height} = Dimensions.get('window');
-  const dynamicHeight = height * 0.4;
 
   return (
-    <>
-      <AppHeader />
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <AppHeader />
+      </View>
 
-      <View style={[styles.bottomMargin]}>
+      <View style={[styles.mainContainer]}>
         <View style={[styles.horizontalPadding, styles.topMargin]}>
           <Card style={styles.cardPadding}>
             <Text variant="titleLarge">Feb</Text>
@@ -49,7 +44,7 @@ const Home = () => {
           </Card>
         </View>
 
-        <View style={[styles.horizontalPadding, styles.topMargin]}>
+        <View style={[styles.horizontalPadding, styles.topMargin, {flex: 10}]}>
           <Card style={[styles.cardPadding]}>
             <View style={styles.historyContainer}>
               <Text variant="bodySmall">
@@ -61,8 +56,7 @@ const Home = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <ScrollView
-              style={[styles.historyItemContainer, {maxHeight: dynamicHeight}]}>
+            <ScrollView>
               {EXPENSE.slice(0, 8).map(item => (
                 <HistoryItem key={item.id} data={item} />
               ))}
@@ -70,25 +64,40 @@ const Home = () => {
           </Card>
         </View>
       </View>
-
-      <BottomNavigationBar />
-      <FAB
-        icon="plus"
-        style={styles.fab}
-        onPress={() => navigation.push('AddExpense')}
-      />
-    </>
+      <View style={styles.footer}>
+        <BottomNavigationBar />
+        <FAB
+          icon="plus"
+          style={styles.fab}
+          onPress={() => navigation.push('AddExpense')}
+        />
+      </View>
+    </View>
   );
 };
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    flex: 0.8,
+  },
+  mainContainer: {
+    flex: 7.2,
+    maxHeight: 'auto',
+    height: 'auto',
+    overflow: 'visible',
+    marginBottom: 0,
+  },
+  footer: {
+    flex: 2,
+    overflow: 'hidden',
+  },
   horizontalPadding: {
     paddingHorizontal: 5,
   },
   topMargin: {
     marginTop: 10,
-  },
-  bottomMargin: {
-    marginBottom: 50,
   },
   cardPadding: {
     padding: 15,
@@ -110,9 +119,6 @@ const styles = StyleSheet.create({
   categoryItemContainer: {
     flexDirection: 'row',
     paddingVertical: 10,
-  },
-  historyItemContainer: {
-    // maxHeight: 400,
   },
 });
 

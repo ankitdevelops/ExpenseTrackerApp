@@ -26,7 +26,6 @@ import {format} from 'date-fns';
 import {EXPENSE} from '../data/expense';
 import BottomNavigationBar from '../components/BottomNavigation';
 import {CATEGORIES} from '../data/category';
-import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 
 const {height} = Dimensions.get('window');
 const History = ({}) => {
@@ -263,7 +262,7 @@ const History = ({}) => {
           </Card>
         </View>
       </View>
-      <View style={{flex: 0.7}}>
+      <View style={{flex: 0.4}}>
         <BottomNavigationBar />
       </View>
     </View>
@@ -285,7 +284,8 @@ const styles = StyleSheet.create({
   historyContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: '10%',
+    paddingVertical: 15,
+    alignContent: 'center',
   },
   modalFooterBtn: {
     flexDirection: 'row',

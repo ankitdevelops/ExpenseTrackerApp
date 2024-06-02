@@ -48,7 +48,7 @@ const Home = () => {
           <Card style={[styles.cardPadding]}>
             <View style={styles.historyContainer}>
               <Text variant="bodySmall">
-                History <Icon source="history" />
+                Recent <Icon source="history" />
               </Text>
               <TouchableOpacity onPress={() => navigation.push('History')}>
                 <Text variant="bodySmall">

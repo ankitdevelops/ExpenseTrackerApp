@@ -18,6 +18,7 @@ import Home from './screens/Home';
 import SignUp from './screens/SignUp';
 import AddExpense from './screens/AddExpense';
 import History from './screens/History';
+import Category from './screens/Category';
 
 // theme setting
 const {DarkTheme} = adaptNavigationTheme({
@@ -41,6 +42,7 @@ function App() {
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="AddExpense" component={AddExpense} />
           <Stack.Screen name="History" component={History} />
+          <Stack.Screen name="Category" component={Category} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

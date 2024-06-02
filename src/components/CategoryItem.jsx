@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {IconButton, Text, withTheme} from 'react-native-paper';
 import {useRoute} from '@react-navigation/native';
 
@@ -7,7 +7,7 @@ const CategoryItem = ({theme, data}) => {
   const route = useRoute();
 
   return (
-    <View style={styles.categoryItem}>
+    <TouchableOpacity style={styles.categoryItem}>
       <IconButton
         icon="plus"
         size={40}
@@ -16,7 +16,7 @@ const CategoryItem = ({theme, data}) => {
       <Text variant="bodyMedium">
         {route.name === 'Home' ? `${data.name.slice(0, 10)}...` : data.name}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

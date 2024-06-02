@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
-  FlatList,
+  SectionList,
 } from 'react-native';
 import React from 'react';
 import AppHeader from '../components/AppHeader';
@@ -73,14 +73,30 @@ const History = ({}) => {
     [setOpenEnd, setEndDate, setFormattedEndDate],
   );
 
-  return (
-    <View style={{flex: 1}}>
-      <View>
-        <AppHeader title="History" />
-      </View>
+  const renderItem = ({item}) => (
+    <View>
+      <HistoryItem data={item} />
+    </View>
+  );
 
-      <View style={[styles.horizontalPadding, styles.bottomMargin, {flex: 1}]}>
-        <View style={styles.topMargin}>
+  const renderHeader = () => (
+    <Card>
+      <View style={styles.historyContainer}>
+        <Chip icon="progress-download" onPress={() => console.log('Pressed')}>
+          Download
+        </Chip>
+        <Chip icon="filter-variant" onPress={() => showModal()}>
+          Filters
+        </Chip>
+      </View>
+    </Card>
+  );
+
+  return (
+    <View style={styles.container}>
+      <AppHeader />
+      <View style={styles.content}>
+        <View>
           <Searchbar
             placeholder="Search"
             onChangeText={setSearchQuery}
@@ -88,23 +104,86 @@ const History = ({}) => {
             theme={{roundness: 1}}
           />
         </View>
-        <View style={[styles.topMargin]}>
-          <Card style={[styles.cardPadding]}>
+        <View style={[styles.categoryContainer]}>
+          <Card style={styles.card}>
+            <SectionList
+              sections={[{title: 'History', data: EXPENSE}]}
+              renderItem={renderItem}
+              keyExtractor={item => item.id}
+              renderSectionHeader={renderHeader}
+              stickySectionHeadersEnabled={true}
+            />
+          </Card>
+        </View>
+        <Portal>
+          <Modal
+            visible={visible}
+            onDismiss={hideModal}
+            // eslint-disable-next-line react-native/no-inline-styles
+            contentContainerStyle={{
+              backgroundColor: theme.colors.onSecondary,
+              padding: 20,
+              marginHorizontal: 20,
+              borderRadius: 5,
+            }}
+            dismissable={false}>
             <View>
-              <View style={styles.historyContainer}>
-                <Chip
-                  icon="progress-download"
-                  onPress={() => console.log('Pressed')}>
-                  Download
-                </Chip>
-                <Chip icon="filter-variant" onPress={() => showModal()}>
-                  Filters
-                </Chip>
+              <View>
+                <Text variant="bodyLarge">Filters</Text>
               </View>
+            </View>
+            <Divider style={styles.topMargin} />
+            <View style={styles.topMargin}>
+              <TouchableOpacity onPress={() => setOpenStart(true)}>
+                <TextInput
+                  label="Start Date"
+                  value={formattedStartDate}
+                  mode="outlined"
+                  editable={false}
+                />
+              </TouchableOpacity>
+              <DatePickerModal
+                locale="en"
+                mode="single"
+                visible={openStart}
+                onDismiss={onDismissStart}
+                date={startDate}
+                onConfirm={onConfirmStart}
+              />
+            </View>
+            <View style={styles.topMargin}>
+              <TouchableOpacity onPress={() => setOpenEnd(true)}>
+                <TextInput
+                  label="End Date"
+                  value={formattedEndDate}
+                  mode="outlined"
+                  editable={false}
+                />
+              </TouchableOpacity>
+              <DatePickerModal
+                locale="en"
+                mode="single"
+                visible={openEnd}
+                onDismiss={onDismissEnd}
+                date={endDate}
+                onConfirm={onConfirmEnd}
+              />
+            </View>
+            <View style={styles.topMargin}>
+              <TouchableOpacity
+                onPress={() => setVisibleCategory(!visibleCategory)}>
+                <TextInput
+                  label="Choose Category"
+                  value={category}
+                  mode="outlined"
+                  editable={false}
+                />
+              </TouchableOpacity>
+
               <Portal>
                 <Modal
-                  visible={visible}
-                  onDismiss={hideModal}
+                  visible={visibleCategory}
+                  onDismiss={() => setVisibleCategory(!visibleCategory)}
                   // eslint-disable-next-line react-native/no-inline-styles
                   contentContainerStyle={{
                     backgroundColor: theme.colors.onSecondary,
@@ -113,126 +192,38 @@ const History = ({}) => {
                     borderRadius: 5,
                   }}
                   dismissable={false}>
-                  <View>
+                  <ScrollView style={{height: dynamicHeight * 0.5}}>
                     <View>
-                      <Text variant="bodyLarge">Filters</Text>
+                      <Text variant="bodyLarge">Choose Category</Text>
                     </View>
-                  </View>
-                  <Divider style={styles.topMargin} />
-                  <View style={styles.topMargin}>
-                    <TouchableOpacity onPress={() => setOpenStart(true)}>
-                      <TextInput
-                        label="Start Date"
-                        value={formattedStartDate}
-                        mode="outlined"
-                        editable={false}
-                      />
-                    </TouchableOpacity>
-                    <DatePickerModal
-                      locale="en"
-                      mode="single"
-                      visible={openStart}
-                      onDismiss={onDismissStart}
-                      date={startDate}
-                      onConfirm={onConfirmStart}
-                    />
-                  </View>
-                  <View style={styles.topMargin}>
-                    <TouchableOpacity onPress={() => setOpenEnd(true)}>
-                      <TextInput
-                        label="End Date"
-                        value={formattedEndDate}
-                        mode="outlined"
-                        editable={false}
-                      />
-                    </TouchableOpacity>
-                    <DatePickerModal
-                      locale="en"
-                      mode="single"
-                      visible={openEnd}
-                      onDismiss={onDismissEnd}
-                      date={endDate}
-                      onConfirm={onConfirmEnd}
-                    />
-                  </View>
-                  <View style={styles.topMargin}>
+                    <Divider style={styles.topMargin} />
+                    <RadioButton.Group
+                      onValueChange={value => setCategory(value)}
+                      value={category}>
+                      {CATEGORIES.map(item => (
+                        <View key={item.id}>
+                          <RadioButton.Item
+                            label={item.name}
+                            value={item.name}
+                          />
+                          <Divider />
+                        </View>
+                      ))}
+                      <RadioButton.Item label="Second item" value="second" />
+                    </RadioButton.Group>
+                  </ScrollView>
+                  <Divider />
+                  <View style={styles.modalFooterBtn}>
                     <TouchableOpacity
                       onPress={() => setVisibleCategory(!visibleCategory)}>
-                      <TextInput
-                        label="Choose Category"
-                        value={category}
-                        mode="outlined"
-                        editable={false}
-                      />
+                      <Text
+                        variant="bodyLarge"
+                        style={styles.modalFooterBtnText}>
+                        Cancel
+                      </Text>
                     </TouchableOpacity>
-
-                    <Portal>
-                      <Modal
-                        visible={visibleCategory}
-                        onDismiss={() => setVisibleCategory(!visibleCategory)}
-                        // eslint-disable-next-line react-native/no-inline-styles
-                        contentContainerStyle={{
-                          backgroundColor: theme.colors.onSecondary,
-                          padding: 20,
-                          marginHorizontal: 20,
-                          borderRadius: 5,
-                        }}
-                        dismissable={false}>
-                        <ScrollView style={{height: dynamicHeight * 0.5}}>
-                          <View>
-                            <Text variant="bodyLarge">Choose Category</Text>
-                          </View>
-                          <Divider style={styles.topMargin} />
-                          <RadioButton.Group
-                            onValueChange={value => setCategory(value)}
-                            value={category}>
-                            {CATEGORIES.map(item => (
-                              <View key={item.id}>
-                                <RadioButton.Item
-                                  label={item.name}
-                                  value={item.name}
-                                />
-                                <Divider />
-                              </View>
-                            ))}
-                            <RadioButton.Item
-                              label="Second item"
-                              value="second"
-                            />
-                          </RadioButton.Group>
-                        </ScrollView>
-                        <Divider />
-                        <View style={styles.modalFooterBtn}>
-                          <TouchableOpacity
-                            onPress={() =>
-                              setVisibleCategory(!visibleCategory)
-                            }>
-                            <Text
-                              variant="bodyLarge"
-                              style={styles.modalFooterBtnText}>
-                              Cancel
-                            </Text>
-                          </TouchableOpacity>
-                          <TouchableOpacity
-                            onPress={() =>
-                              setVisibleCategory(!visibleCategory)
-                            }>
-                            <Text
-                              variant="bodyLarge"
-                              style={styles.modalFooterBtnText}>
-                              Done
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                      </Modal>
-                    </Portal>
-                  </View>
-                  <View style={styles.modalFooterBtn}>
-                    <TouchableOpacity onPress={hideModal}>
-                      <Text variant="bodyLarge">Cancel</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={hideModal}>
+                    <TouchableOpacity
+                      onPress={() => setVisibleCategory(!visibleCategory)}>
                       <Text
                         variant="bodyLarge"
                         style={styles.modalFooterBtnText}>
@@ -243,28 +234,21 @@ const History = ({}) => {
                 </Modal>
               </Portal>
             </View>
+            <View style={styles.modalFooterBtn}>
+              <TouchableOpacity onPress={hideModal}>
+                <Text variant="bodyLarge">Cancel</Text>
+              </TouchableOpacity>
 
-            {/* <ScrollView
-              style={[
-                styles.historyItemContainer,
-                {maxHeight: dynamicHeight * 0.65},
-              ]}> */}
-            <FlatList
-              // style={{flex: 1}}
-              data={EXPENSE}
-              renderItem={({item}) => <HistoryItem key={item.id} data={item} />}
-              keyExtractor={item => item.id}
-            />
-            {/* {EXPENSE.map(item => (
-                <HistoryItem key={item.id} data={item} />
-              ))} */}
-            {/* </ScrollView> */}
-          </Card>
-        </View>
+              <TouchableOpacity onPress={hideModal}>
+                <Text variant="bodyLarge" style={styles.modalFooterBtnText}>
+                  Done
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        </Portal>
       </View>
-      <View style={{flex: 0.4}}>
-        <BottomNavigationBar />
-      </View>
+      <BottomNavigationBar />
     </View>
   );
 };
@@ -272,20 +256,33 @@ const History = ({}) => {
 export default History;
 
 const styles = StyleSheet.create({
-  topMargin: {
-    marginTop: 10,
+  container: {
+    flex: 1,
+    gap: 5,
   },
-  horizontalPadding: {
+  content: {
+    flex: 1,
     paddingHorizontal: 5,
+    gap: 5,
   },
-  cardPadding: {
-    padding: 15,
+  topMargin: {
+    marginBottom: 10,
   },
+  categoryContainer: {
+    flex: 0.85,
+  },
+  card: {
+    flex: 1,
+  },
+  row: {
+    flex: 1,
+    justifyContent: 'space-around',
+  },
+
   historyContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 15,
-    alignContent: 'center',
+    padding: 20,
   },
   modalFooterBtn: {
     flexDirection: 'row',
@@ -293,8 +290,4 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   modalFooterBtnText: {marginLeft: 10},
-  bottomMargin: {
-    marginBottom: height * 0.18,
-    // position: 'absolute',
-  },
 });

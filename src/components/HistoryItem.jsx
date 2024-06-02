@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: 10,
+    paddingHorizontal: 10,
   },
   historyItemInfoContainer: {
     flexDirection: 'row',

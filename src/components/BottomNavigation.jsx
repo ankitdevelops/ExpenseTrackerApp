@@ -23,7 +23,9 @@ const BottomNavigationBar = () => {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigateTo('Category')}>
           <IconButton icon="clipboard-list" size={30} />
           <Text variant="bodyMedium" style={styles.text}>
             Category

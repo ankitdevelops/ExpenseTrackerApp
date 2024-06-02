@@ -18,7 +18,7 @@ const Category = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader />
+      <AppHeader title="Categories" />
       <View style={styles.content}>
         <View>
           <Searchbar

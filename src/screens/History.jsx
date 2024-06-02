@@ -94,7 +94,7 @@ const History = ({}) => {
 
   return (
     <View style={styles.container}>
-      <AppHeader />
+      <AppHeader title="History" />
       <View style={styles.content}>
         <View>
           <Searchbar

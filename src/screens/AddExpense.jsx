@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
+  Keyboard,
 } from 'react-native';
 import React, {useState} from 'react';
 import {
@@ -31,7 +32,10 @@ const AddExpense = () => {
   const [category, setCategory] = useState('');
   const [visible, setVisible] = React.useState(false);
 
-  const showModal = () => setVisible(true);
+  const showModal = () => {
+    Keyboard.dismiss();
+    setVisible(true);
+  };
   const hideModal = () => setVisible(false);
 
   return (
@@ -42,7 +46,7 @@ const AddExpense = () => {
           <TextInput
             label="Expense Name"
             value={name}
-            onChangeText={e => setName(e.target.value)}
+            onChangeText={setName}
             mode="outlined"
           />
         </View>
@@ -50,8 +54,9 @@ const AddExpense = () => {
           <TextInput
             label="Amount"
             value={amount}
-            onChangeText={e => setAmount(e.target.value)}
+            onChangeText={setAmount}
             mode="outlined"
+            keyboardType="numeric"
           />
         </View>
         <View style={styles.inputFieldMargin}>

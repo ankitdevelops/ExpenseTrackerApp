@@ -53,7 +53,7 @@ const Home = () => {
         </View>
 
         <View>
-          <Card style={[styles.cardPadding]}>
+          <Card>
             <View style={styles.historyContainer}>
               <Text variant="bodySmall">
                 Category <Icon source="clipboard-list" />
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   historyContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 10,
+    padding: 15,
   },
 
   fab: {

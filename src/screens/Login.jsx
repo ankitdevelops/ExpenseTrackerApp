@@ -2,12 +2,58 @@ import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {TextInput, Button, Text} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
+import * as yup from 'yup';
 
 const Login = ({theme}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   const navigation = useNavigation();
+
+  const getCharacterValidationError = str => {
+    return `Your password must have at least 1 ${str} character`;
+  };
+
+  const validationSchema = yup.object().shape({
+    email: yup
+      .string()
+      .email('Please enter a valid email address.')
+      .required('Email is required.'),
+    password: yup
+      .string()
+      .min(8, 'Password must have at least 8 characters')
+      .matches(/[0-9]/, getCharacterValidationError('digit'))
+      .matches(/[a-z]/, getCharacterValidationError('lowercase'))
+      .matches(/[A-Z]/, getCharacterValidationError('uppercase'))
+      .required('Password is required.'),
+  });
+
+  const handleLogin = () => {
+    validationSchema
+      .validate({email, password}, {abortEarly: false})
+      .then(() => {
+        setEmailError('');
+        setPasswordError('');
+        navigation.push('Home');
+      })
+      .catch(err => {
+        let emailErrorMsg = '';
+        let passwordErrorMsg = '';
+
+        err.inner.forEach(error => {
+          if (error.path === 'email') {
+            emailErrorMsg = error.message;
+          } else if (error.path === 'password') {
+            passwordErrorMsg = error.message;
+          }
+        });
+
+        setEmailError(emailErrorMsg);
+        setPasswordError(passwordErrorMsg);
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -15,22 +61,29 @@ const Login = ({theme}) => {
         <TextInput
           label="Email"
           value={email}
-          onChangeText={email => setEmail(email)}
+          onChangeText={setEmail}
           mode="outlined"
+          error={!!emailError}
         />
+        {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
       </View>
       <View style={styles.colMargin}>
         <TextInput
           label="Password"
           value={password}
-          onChangeText={password => setPassword(password)}
+          onChangeText={setPassword}
           mode="outlined"
+          secureTextEntry
+          error={!!passwordError}
         />
+        {passwordError ? (
+          <Text style={styles.errorText}>{passwordError}</Text>
+        ) : null}
       </View>
       <View>
         <Button
           mode="contained"
-          onPress={() => navigation.push('Home')}
+          onPress={handleLogin}
           textColor="#DAE0E2"
           buttonColor="#2F363F"
           theme={{roundness: 1}}
@@ -46,7 +99,7 @@ const Login = ({theme}) => {
           variant="labelMedium"
           style={styles.singupBtn}
           onPress={() => navigation.push('SignUp')}>
-          Sing Up
+          Sign Up
         </Text>
       </View>
     </View>
@@ -75,6 +128,11 @@ const styles = StyleSheet.create({
   singupBtn: {
     marginLeft: 9,
     color: '#0A79DF',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    marginTop: 5,
   },
 });
 

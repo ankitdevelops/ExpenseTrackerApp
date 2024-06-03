@@ -7,7 +7,6 @@ import {
   SectionList,
 } from 'react-native';
 import React from 'react';
-import AppHeader from '../components/AppHeader';
 import {
   Card,
   Divider,
@@ -24,8 +23,8 @@ import HistoryItem from '../components/HistoryItem';
 import {DatePickerModal} from 'react-native-paper-dates';
 import {format} from 'date-fns';
 import {EXPENSE} from '../data/expense';
-import BottomNavigationBar from '../components/BottomNavigation';
 import {CATEGORIES} from '../data/category';
+import AppWrapper from '../components/AppWrapper';
 
 const {height} = Dimensions.get('window');
 const History = ({}) => {
@@ -93,163 +92,152 @@ const History = ({}) => {
   );
 
   return (
-    <View style={styles.container}>
-      <AppHeader title="History" />
-      <View style={styles.content}>
-        <View>
-          <Searchbar
-            placeholder="Search"
-            onChangeText={setSearchQuery}
-            value={searchQuery}
-            theme={{roundness: 1}}
-          />
-        </View>
-        <View style={[styles.categoryContainer]}>
-          <Card style={styles.card}>
-            <SectionList
-              sections={[{title: 'History', data: EXPENSE}]}
-              renderItem={renderItem}
-              keyExtractor={item => item.id}
-              renderSectionHeader={renderHeader}
-              stickySectionHeadersEnabled={true}
-            />
-          </Card>
-        </View>
-        <Portal>
-          <Modal
-            visible={visible}
-            onDismiss={hideModal}
-            // eslint-disable-next-line react-native/no-inline-styles
-            contentContainerStyle={{
-              backgroundColor: theme.colors.onSecondary,
-              padding: 20,
-              marginHorizontal: 20,
-              borderRadius: 5,
-            }}
-            dismissable={false}>
-            <View>
-              <View>
-                <Text variant="bodyLarge">Filters</Text>
-              </View>
-            </View>
-            <Divider style={styles.topMargin} />
-            <View style={styles.topMargin}>
-              <TouchableOpacity onPress={() => setOpenStart(true)}>
-                <TextInput
-                  label="Start Date"
-                  value={formattedStartDate}
-                  mode="outlined"
-                  editable={false}
-                />
-              </TouchableOpacity>
-              <DatePickerModal
-                locale="en"
-                mode="single"
-                visible={openStart}
-                onDismiss={onDismissStart}
-                date={startDate}
-                onConfirm={onConfirmStart}
-              />
-            </View>
-            <View style={styles.topMargin}>
-              <TouchableOpacity onPress={() => setOpenEnd(true)}>
-                <TextInput
-                  label="End Date"
-                  value={formattedEndDate}
-                  mode="outlined"
-                  editable={false}
-                />
-              </TouchableOpacity>
-              <DatePickerModal
-                locale="en"
-                mode="single"
-                visible={openEnd}
-                onDismiss={onDismissEnd}
-                date={endDate}
-                onConfirm={onConfirmEnd}
-              />
-            </View>
-            <View style={styles.topMargin}>
-              <TouchableOpacity
-                onPress={() => setVisibleCategory(!visibleCategory)}>
-                <TextInput
-                  label="Choose Category"
-                  value={category}
-                  mode="outlined"
-                  editable={false}
-                />
-              </TouchableOpacity>
-
-              <Portal>
-                <Modal
-                  visible={visibleCategory}
-                  onDismiss={() => setVisibleCategory(!visibleCategory)}
-                  // eslint-disable-next-line react-native/no-inline-styles
-                  contentContainerStyle={{
-                    backgroundColor: theme.colors.onSecondary,
-                    padding: 20,
-                    marginHorizontal: 20,
-                    borderRadius: 5,
-                  }}
-                  dismissable={false}>
-                  <ScrollView style={{height: dynamicHeight * 0.5}}>
-                    <View>
-                      <Text variant="bodyLarge">Choose Category</Text>
-                    </View>
-                    <Divider style={styles.topMargin} />
-                    <RadioButton.Group
-                      onValueChange={value => setCategory(value)}
-                      value={category}>
-                      {CATEGORIES.map(item => (
-                        <View key={item.id}>
-                          <RadioButton.Item
-                            label={item.name}
-                            value={item.name}
-                          />
-                          <Divider />
-                        </View>
-                      ))}
-                      <RadioButton.Item label="Second item" value="second" />
-                    </RadioButton.Group>
-                  </ScrollView>
-                  <Divider />
-                  <View style={styles.modalFooterBtn}>
-                    <TouchableOpacity
-                      onPress={() => setVisibleCategory(!visibleCategory)}>
-                      <Text
-                        variant="bodyLarge"
-                        style={styles.modalFooterBtnText}>
-                        Cancel
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => setVisibleCategory(!visibleCategory)}>
-                      <Text
-                        variant="bodyLarge"
-                        style={styles.modalFooterBtnText}>
-                        Done
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </Modal>
-              </Portal>
-            </View>
-            <View style={styles.modalFooterBtn}>
-              <TouchableOpacity onPress={hideModal}>
-                <Text variant="bodyLarge">Cancel</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={hideModal}>
-                <Text variant="bodyLarge" style={styles.modalFooterBtnText}>
-                  Done
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </Modal>
-        </Portal>
+    <AppWrapper>
+      <View>
+        <Searchbar
+          placeholder="Search"
+          onChangeText={setSearchQuery}
+          value={searchQuery}
+          theme={{roundness: 1}}
+        />
       </View>
-      <BottomNavigationBar />
-    </View>
+      <View style={[styles.categoryContainer]}>
+        <Card style={styles.card}>
+          <SectionList
+            sections={[{title: 'History', data: EXPENSE}]}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            renderSectionHeader={renderHeader}
+            stickySectionHeadersEnabled={true}
+          />
+        </Card>
+      </View>
+      <Portal>
+        <Modal
+          visible={visible}
+          onDismiss={hideModal}
+          // eslint-disable-next-line react-native/no-inline-styles
+          contentContainerStyle={{
+            backgroundColor: theme.colors.onSecondary,
+            padding: 20,
+            marginHorizontal: 20,
+            borderRadius: 5,
+          }}
+          dismissable={false}>
+          <View>
+            <View>
+              <Text variant="bodyLarge">Filters</Text>
+            </View>
+          </View>
+          <Divider style={styles.topMargin} />
+          <View style={styles.topMargin}>
+            <TouchableOpacity onPress={() => setOpenStart(true)}>
+              <TextInput
+                label="Start Date"
+                value={formattedStartDate}
+                mode="outlined"
+                editable={false}
+              />
+            </TouchableOpacity>
+            <DatePickerModal
+              locale="en"
+              mode="single"
+              visible={openStart}
+              onDismiss={onDismissStart}
+              date={startDate}
+              onConfirm={onConfirmStart}
+            />
+          </View>
+          <View style={styles.topMargin}>
+            <TouchableOpacity onPress={() => setOpenEnd(true)}>
+              <TextInput
+                label="End Date"
+                value={formattedEndDate}
+                mode="outlined"
+                editable={false}
+              />
+            </TouchableOpacity>
+            <DatePickerModal
+              locale="en"
+              mode="single"
+              visible={openEnd}
+              onDismiss={onDismissEnd}
+              date={endDate}
+              onConfirm={onConfirmEnd}
+            />
+          </View>
+          <View style={styles.topMargin}>
+            <TouchableOpacity
+              onPress={() => setVisibleCategory(!visibleCategory)}>
+              <TextInput
+                label="Choose Category"
+                value={category}
+                mode="outlined"
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <Portal>
+              <Modal
+                visible={visibleCategory}
+                onDismiss={() => setVisibleCategory(!visibleCategory)}
+                // eslint-disable-next-line react-native/no-inline-styles
+                contentContainerStyle={{
+                  backgroundColor: theme.colors.onSecondary,
+                  padding: 20,
+                  marginHorizontal: 20,
+                  borderRadius: 5,
+                }}
+                dismissable={false}>
+                <ScrollView style={{height: dynamicHeight * 0.5}}>
+                  <View>
+                    <Text variant="bodyLarge">Choose Category</Text>
+                  </View>
+                  <Divider style={styles.topMargin} />
+                  <RadioButton.Group
+                    onValueChange={value => setCategory(value)}
+                    value={category}>
+                    {CATEGORIES.map(item => (
+                      <View key={item.id}>
+                        <RadioButton.Item label={item.name} value={item.name} />
+                        <Divider />
+                      </View>
+                    ))}
+                    <RadioButton.Item label="Second item" value="second" />
+                  </RadioButton.Group>
+                </ScrollView>
+                <Divider />
+                <View style={styles.modalFooterBtn}>
+                  <TouchableOpacity
+                    onPress={() => setVisibleCategory(!visibleCategory)}>
+                    <Text variant="bodyLarge" style={styles.modalFooterBtnText}>
+                      Cancel
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => setVisibleCategory(!visibleCategory)}>
+                    <Text variant="bodyLarge" style={styles.modalFooterBtnText}>
+                      Done
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </Modal>
+            </Portal>
+          </View>
+          <View style={styles.modalFooterBtn}>
+            <TouchableOpacity onPress={hideModal}>
+              <Text variant="bodyLarge">Cancel</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={hideModal}>
+              <Text variant="bodyLarge" style={styles.modalFooterBtnText}>
+                Done
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      </Portal>
+    </AppWrapper>
   );
 };
 

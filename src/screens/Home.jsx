@@ -5,17 +5,15 @@ import {useNavigation} from '@react-navigation/native';
 import {
   View,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
   FlatList,
   SectionList,
 } from 'react-native';
 import HistoryItem from '../components/HistoryItem';
 import CategoryItem from '../components/CategoryItem';
-import AppHeader from '../components/AppHeader';
 import {EXPENSE} from '../data/expense';
 import {CATEGORIES} from '../data/category';
-import BottomNavigationBar from '../components/BottomNavigation';
+import AppWrapper from '../components/AppWrapper';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -42,59 +40,59 @@ const Home = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <AppHeader />
-      <View style={styles.content}>
-        <View>
-          <Card style={styles.cardPadding}>
-            <Text variant="titleLarge">Feb</Text>
-            <Text variant="displaySmall">$ 500</Text>
-          </Card>
-        </View>
+    <>
+      <AppWrapper>
+        <View style={styles.content}>
+          <View>
+            <Card style={styles.cardPadding}>
+              <Text variant="titleLarge">Feb</Text>
+              <Text variant="displaySmall">$ 500</Text>
+            </Card>
+          </View>
 
-        <View>
-          <Card>
-            <View style={styles.historyContainer}>
-              <Text variant="bodySmall">
-                Category <Icon source="clipboard-list" />
-              </Text>
-
-              <TouchableOpacity onPress={() => navigation.push('Category')}>
+          <View>
+            <Card>
+              <View style={styles.historyContainer}>
                 <Text variant="bodySmall">
-                  View All <Icon source="arrow-right-drop-circle" />
+                  Category <Icon source="clipboard-list" />
                 </Text>
-              </TouchableOpacity>
-            </View>
-            <FlatList
-              data={CATEGORIES}
-              renderItem={renderCategoryItem}
-              keyExtractor={item => item.id.toString()}
-              horizontal={true}
-              contentContainerStyle={styles.categoryItemContainer}
-            />
-          </Card>
-        </View>
 
-        <View style={{flex: 1}}>
-          <Card style={{flex: 0.8}}>
-            <SectionList
-              sections={[{title: 'History', data: EXPENSE}]}
-              renderItem={renderHistoryItem}
-              keyExtractor={item => item.id}
-              renderSectionHeader={renderHeader}
-              stickySectionHeadersEnabled={true}
-              contentContainerStyle={{marginBottom: 10}}
-            />
-          </Card>
+                <TouchableOpacity onPress={() => navigation.push('Category')}>
+                  <Text variant="bodySmall">
+                    View All <Icon source="arrow-right-drop-circle" />
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <FlatList
+                data={CATEGORIES}
+                renderItem={renderCategoryItem}
+                keyExtractor={item => item.id.toString()}
+                horizontal={true}
+                contentContainerStyle={styles.categoryItemContainer}
+              />
+            </Card>
+          </View>
+
+          <View style={{flex: 1}}>
+            <Card style={{flex: 0.8}}>
+              <SectionList
+                sections={[{title: 'History', data: EXPENSE}]}
+                renderItem={renderHistoryItem}
+                keyExtractor={item => item.id}
+                renderSectionHeader={renderHeader}
+                stickySectionHeadersEnabled={true}
+                contentContainerStyle={{marginBottom: 10}}
+              />
+            </Card>
+          </View>
         </View>
-      </View>
-      <BottomNavigationBar />
+      </AppWrapper>
       <FAB
         icon="plus"
         style={styles.fab}
         onPress={() => navigation.push('AddExpense')}
       />
-    </View>
+    </>
   );
 };
 const styles = StyleSheet.create({

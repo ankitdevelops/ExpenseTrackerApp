@@ -19,6 +19,7 @@ import SignUp from './screens/SignUp';
 import AddExpense from './screens/AddExpense';
 import History from './screens/History';
 import Category from './screens/Category';
+import BottomTab from './navigatator/BottomNavigation';
 
 // theme setting
 const {DarkTheme} = adaptNavigationTheme({
@@ -37,7 +38,7 @@ function App() {
         <Stack.Navigator
           initialRouteName="Login"
           screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Main" component={BottomTab} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="AddExpense" component={AddExpense} />

@@ -36,7 +36,7 @@ const Login = ({theme}) => {
       .then(() => {
         setEmailError('');
         setPasswordError('');
-        navigation.push('Home');
+        navigation.navigate('Main');
       })
       .catch(err => {
         let emailErrorMsg = '';

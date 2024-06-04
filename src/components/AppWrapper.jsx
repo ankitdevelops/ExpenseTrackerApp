@@ -1,14 +1,12 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import AppHeader from '../components/AppHeader';
-import BottomNavigationBar from '../components/BottomNavigation';
 
 const AppWrapper = ({children}) => {
   return (
     <View style={styles.container}>
       <AppHeader />
       <View style={styles.content}>{children}</View>
-      <BottomNavigationBar />
     </View>
   );
 };

@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {TextInput, Button, Text} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
 
-const SignUp = () => {
+const SignUp = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -45,7 +44,7 @@ const SignUp = () => {
         <Text
           variant="labelMedium"
           style={styles.singupBtn}
-          onPress={() => navigation.push('Login')}>
+          onPress={() => navigation.navigate('Login')}>
           Login Now
         </Text>
       </View>

@@ -33,6 +33,7 @@ const Category = () => {
             keyExtractor={item => item.id}
             numColumns={3}
             columnWrapperStyle={styles.row}
+            showsVerticalScrollIndicator={false}
           />
         </Card>
       </View>
@@ -56,7 +57,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   categoryContainer: {
-    flex: 0.85,
+    flex: 1,
+    marginBottom: 5,
   },
   itemContainer: {
     flex: 1,

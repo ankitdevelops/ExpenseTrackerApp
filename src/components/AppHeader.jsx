@@ -16,7 +16,7 @@ const AppHeader = ({title}) => {
           }}
         />
       )}
-      <Appbar.Content title={title ? title : 'Home'} />
+      <Appbar.Content title={route ? route.name : 'Home'} />
       <Appbar.Action
         icon="account-circle"
         onPress={() => {

@@ -42,8 +42,8 @@ function App() {
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="AddExpense" component={AddExpense} />
-          <Stack.Screen name="History" component={History} />
-          <Stack.Screen name="Category" component={Category} />
+          {/* <Stack.Screen name="History" component={History} /> */}
+          {/* <Stack.Screen name="Category" component={Category} /> */}
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

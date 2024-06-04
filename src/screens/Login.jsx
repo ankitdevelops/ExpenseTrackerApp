@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {TextInput, Button, Text} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
 import * as yup from 'yup';
 
-const Login = ({theme}) => {
+const Login = ({theme, navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   const getCharacterValidationError = str => {
     return `Your password must have at least 1 ${str} character`;
@@ -98,7 +97,7 @@ const Login = ({theme}) => {
         <Text
           variant="labelMedium"
           style={styles.singupBtn}
-          onPress={() => navigation.push('SignUp')}>
+          onPress={() => navigation.navigate('SignUp')}>
           Sign Up
         </Text>
       </View>

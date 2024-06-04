@@ -109,6 +109,7 @@ const History = ({}) => {
             keyExtractor={item => item.id}
             renderSectionHeader={renderHeader}
             stickySectionHeadersEnabled={true}
+            showsVerticalScrollIndicator={false}
           />
         </Card>
       </View>
@@ -257,7 +258,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   categoryContainer: {
-    flex: 0.85,
+    flex: 1,
+    marginBottom: 5,
   },
   card: {
     flex: 1,

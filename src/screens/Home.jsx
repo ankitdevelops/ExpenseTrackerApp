@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {Card, Text, Icon, FAB} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
 import {
   View,
   StyleSheet,
@@ -15,8 +14,8 @@ import {EXPENSE} from '../data/expense';
 import {CATEGORIES} from '../data/category';
 import AppWrapper from '../components/AppWrapper';
 
-const Home = () => {
-  const navigation = useNavigation();
+const Home = ({navigation}) => {
+  // const navigation = useNavigation();
   const renderCategoryItem = ({item}) => (
     <CategoryItem key={item.id} data={item} />
   );
@@ -30,7 +29,7 @@ const Home = () => {
         <Text variant="bodySmall">
           History <Icon source="history" />
         </Text>
-        <TouchableOpacity onPress={() => navigation.push('History')}>
+        <TouchableOpacity onPress={() => navigation.navigate('History')}>
           <Text variant="bodySmall">
             View All <Icon source="arrow-right-drop-circle" />
           </Text>
@@ -57,31 +56,34 @@ const Home = () => {
                   Category <Icon source="clipboard-list" />
                 </Text>
 
-                <TouchableOpacity onPress={() => navigation.push('Category')}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Category')}>
                   <Text variant="bodySmall">
                     View All <Icon source="arrow-right-drop-circle" />
                   </Text>
                 </TouchableOpacity>
               </View>
               <FlatList
-                data={CATEGORIES}
+                data={CATEGORIES.slice(0, 5)}
                 renderItem={renderCategoryItem}
                 keyExtractor={item => item.id.toString()}
                 horizontal={true}
                 contentContainerStyle={styles.categoryItemContainer}
+                showsHorizontalScrollIndicator={false}
               />
             </Card>
           </View>
 
           <View style={{flex: 1}}>
-            <Card style={{flex: 0.8}}>
+            <Card style={{marginBottom: 5}}>
               <SectionList
-                sections={[{title: 'History', data: EXPENSE}]}
+                sections={[{title: 'History', data: EXPENSE.slice(0, 10)}]}
                 renderItem={renderHistoryItem}
                 keyExtractor={item => item.id}
                 renderSectionHeader={renderHeader}
                 stickySectionHeadersEnabled={true}
                 contentContainerStyle={{marginBottom: 10}}
+                showsVerticalScrollIndicator={false}
               />
             </Card>
           </View>
@@ -124,8 +126,8 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     margin: 16,
-    right: 0,
-    bottom: 60,
+    right: 10,
+    bottom: 10,
     padding: 5,
   },
 });

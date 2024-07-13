@@ -21,6 +21,8 @@ import {useNavigation} from '@react-navigation/native';
 
 import AppHeader from '../components/AppHeader';
 import {CATEGORIES} from '../data/category';
+import useAuthContext from '../store/hooks/useAuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddExpense = () => {
   const screenHeight = Dimensions.get('window').height;
@@ -31,7 +33,20 @@ const AddExpense = () => {
   const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState('');
   const [visible, setVisible] = React.useState(false);
-
+  const {accessToken} = useAuthContext();
+  const _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('ACCESS_TOKEN');
+      if (value !== null) {
+        // We have data!!
+        console.log('>>>', value);
+      }
+    } catch (error) {
+      // Error retrieving data
+      console.error('Error retrieving access token: ', error);
+    }
+  };
+  _retrieveData();
   const showModal = () => {
     Keyboard.dismiss();
     setVisible(true);

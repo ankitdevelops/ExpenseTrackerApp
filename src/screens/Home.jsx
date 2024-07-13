@@ -16,6 +16,7 @@ import AppWrapper from '../components/AppWrapper';
 
 const Home = ({navigation}) => {
   // const navigation = useNavigation();
+
   const renderCategoryItem = ({item}) => (
     <CategoryItem key={item.id} data={item} />
   );

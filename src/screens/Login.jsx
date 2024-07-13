@@ -2,56 +2,60 @@ import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {TextInput, Button, Text} from 'react-native-paper';
 import * as yup from 'yup';
+import {loginUser} from '../utils/lib/auth';
+import useAuthContext from '../store/hooks/useAuthContext';
 
 const Login = ({theme, navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-
-  // const navigation = useNavigation();
-
-  const getCharacterValidationError = str => {
-    return `Your password must have at least 1 ${str} character`;
-  };
+  const [loading, setLoading] = useState(false);
+  const {setAccessToken} = useAuthContext();
 
   const validationSchema = yup.object().shape({
     email: yup
       .string()
       .email('Please enter a valid email address.')
       .required('Email is required.'),
-    password: yup
-      .string()
-      .min(8, 'Password must have at least 8 characters')
-      .matches(/[0-9]/, getCharacterValidationError('digit'))
-      .matches(/[a-z]/, getCharacterValidationError('lowercase'))
-      .matches(/[A-Z]/, getCharacterValidationError('uppercase'))
-      .required('Password is required.'),
+    password: yup.string().required('Password is required.'),
   });
 
-  const handleLogin = () => {
-    validationSchema
-      .validate({email, password}, {abortEarly: false})
-      .then(() => {
-        setEmailError('');
-        setPasswordError('');
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      await validationSchema.validate({email, password}, {abortEarly: false});
+      setEmailError('');
+      setPasswordError('');
+      try {
+        const response = await loginUser(email, password);
+        setAccessToken(response.access);
         navigation.navigate('Main');
-      })
-      .catch(err => {
-        let emailErrorMsg = '';
-        let passwordErrorMsg = '';
+      } catch (error) {
+        const err = JSON.stringify(error.response.data);
 
-        err.inner.forEach(error => {
-          if (error.path === 'email') {
-            emailErrorMsg = error.message;
-          } else if (error.path === 'password') {
-            passwordErrorMsg = error.message;
-          }
-        });
+        setEmailError(
+          err.status !== '200' &&
+            'Failed to login. Please check your credentials.',
+        );
+      }
+    } catch (err) {
+      let emailErrorMsg = '';
+      let passwordErrorMsg = '';
 
-        setEmailError(emailErrorMsg);
-        setPasswordError(passwordErrorMsg);
+      err.inner.forEach(error => {
+        if (error.path === 'email') {
+          emailErrorMsg = error.message;
+        } else if (error.path === 'password') {
+          passwordErrorMsg = error.message;
+        }
       });
+
+      setEmailError(emailErrorMsg);
+      setPasswordError(passwordErrorMsg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -88,7 +92,7 @@ const Login = ({theme, navigation}) => {
           theme={{roundness: 1}}
           compact={false}>
           <Text variant="titleMedium" style={styles.buttonText}>
-            Login Now
+            {loading ? 'Logging in...' : 'Login Now'}
           </Text>
         </Button>
       </View>
